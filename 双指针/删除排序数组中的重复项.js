@@ -33,8 +33,8 @@ var removeDuplicates = function(nums) {
     const len = nums.length;
 
     for (let index = 0; index < len; index++) {
-        if (nums[i] !== num[i - 1]) {
-            nums[i - count] = nums[i];
+        if (nums[index] !== nums[index - 1]) {
+            nums[index - count] = nums[index];
         } else {
             count ++;
         }
