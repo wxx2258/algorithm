@@ -64,22 +64,30 @@
  */
 
 function mergeTwoLists(l1: ListNode | null, l2: ListNode | null): ListNode | null {
-  let preHead = new ListNode(0)
-  let head = preHead
+  let dummyHead = new ListNode(0)
+  let head = dummyHead
+
   while(l1 !== null && l2 !== null) {
     if (l1.val <= l2.val) {
-      preHead.next = l1
+      dummyHead.next = l1
       l1 = l1.next
     } else {
-      preHead.next = l2
-      l2 = l2.next   
+      dummyHead.next = l2
+      l2 = l2.next
     }
-    preHead = preHead.next
+    dummyHead = dummyHead.next
   }
-  preHead.next = l1 === null ? l2 : l1
+  dummyHead.next = l1 === null ? l2 : l1
   return head.next
 };
-//50%
+//60%
+
+
+
+
+
+
+
 
 
 
@@ -104,7 +112,22 @@ function mergeTwoLists(l1: ListNode | null, l2: ListNode | null): ListNode | nul
   }
 };
 2. 将递归换成迭代的方式 
-
+function mergeTwoLists(l1: ListNode | null, l2: ListNode | null): ListNode | null {
+  let preHead = new ListNode(0)
+  let head = preHead
+  while(l1 !== null && l2 !== null) {
+    if (l1.val <= l2.val) {
+      preHead.next = l1
+      l1 = l1.next
+    } else {
+      preHead.next = l2
+      l2 = l2.next   
+    }
+    preHead = preHead.next
+  }
+  preHead.next = l1 === null ? l2 : l1
+  return head.next
+};
  */
 
 // @lc code=end
