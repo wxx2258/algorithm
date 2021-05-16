@@ -61,6 +61,51 @@
 
 // @lc code=start
 function ladderLength(beginWord: string, endWord: string, wordList: string[]): number {
+  let wordListSet = new Set(wordList);
+  if (!wordListSet.has(endWord)) {
+    return 0;
+  }
+  let beginSet: Set<string> = new Set();
+  beginSet.add(beginWord);
+  let endSet: Set<string> = new Set();
+  endSet.add(endWord)
+  let level = 1;
+  // BFS
+  while (beginSet.size > 0) {
+    let next_beginSet: Set<string> = new Set();
+    for (let key of beginSet) {
+      for (let i = 0; i < key.length; i++) {
+        for (let j = 0; j < 26; j++) {
+          let s = String.fromCharCode(97 + j);
+          if (s != key[i]) {
+            let new_word = key.slice(0, i) + s + key.slice(i + 1);
+            if (endSet.has(new_word)) {
+              return level + 1;
+            }
+            if (wordListSet.has(new_word)) {
+              next_beginSet.add(new_word);
+              wordListSet.delete(new_word);
+            }
+          }
+        }
+      }
+    }
+    beginSet = next_beginSet;
+    level++;
+    if (beginSet.size > endSet.size) {
+      [beginSet, endSet] = [endSet, beginSet]
+    }
+  }
+  return 0;
+};
+
+// 50
+
+
+/*
+1. 广度遍历
+https://leetcode-cn.com/problems/word-ladder/solution/shou-hua-tu-jie-127-dan-ci-jie-long-bfsde-dian-x-2/
+function ladderLength(beginWord: string, endWord: string, wordList: string[]): number {
   const wordSet = new Set(wordList)
   const queue: [string, number][] = [[beginWord, 1]]
   const aCode = 'a'.charCodeAt(0)
@@ -81,15 +126,38 @@ function ladderLength(beginWord: string, endWord: string, wordList: string[]): n
   return 0
 };
 
-// 50
-
-
-/*
-1. 广度遍历
-https://leetcode-cn.com/problems/word-ladder/solution/shou-hua-tu-jie-127-dan-ci-jie-long-bfsde-dian-x-2/
 
 2. 深度遍历 遍历出所有可以满足的情况，但这样无法提前结束
-// TODO 待自己手写一遍
+function ladderLength(beginWord: string, endWord: string, wordList: string[]): number {
+  if(!endWord || !wordList.includes(endWord)) return 0
+  const visited = {}
+  let minLevel = Number.MAX_SAFE_INTEGER
+  let level = 1
+  recursion(beginWord, level)
+  return minLevel
+  function recursion(beginWord, level) {
+    if (beginWord === endWord) {
+      minLevel = Math.min(minLevel, level)
+    }
+    for (let i = 0; i < wordList.length; i++) {
+      const tmpWord = wordList[i]
+      let diff = 0
+      for (let r = 0; r < tmpWord.length; r++) {
+        if (beginWord[r] !== tmpWord[r]) {
+          diff ++ 
+          if (diff > 1) break
+        }
+      }
+      if (diff === 1 && !visited[tmpWord]) {
+        visited[tmpWord] = true
+        recursion(tmpWord, level + 1)
+        visited[tmpWord] = false
+      }
+    }
+  }
+};
+
+3. 双端广度优先遍历
+
 */
 // @lc code=end
-
